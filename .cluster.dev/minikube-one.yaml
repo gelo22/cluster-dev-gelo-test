@@ -1,0 +1,17 @@
+cluster:
+  installed: true
+  name: minikube-one
+  cloud:
+    provider: aws
+    region: eu-central-1
+    vpc: default
+    # You need a domain in Route53 account
+    domain: test-domain.fun
+  provisioner:
+    type: minikube
+    instanceType: m5.large
+  # 'apps' are actually directories in '/kubernetes/apps'
+  # that contains ArgoCD project and application declarations
+  apps:
+    - /kubernetes/apps/samples
+
