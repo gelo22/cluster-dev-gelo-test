@@ -5,8 +5,7 @@ on:
       - '.cluster.dev/**' # Path to cluster declaration manifests
       - '/kubernetes/apps/**' # Create your ArgoCD app folders here
     branches:
-      - aws_account_precise_permissions
-     #- master
+      - master
 jobs:
   deploy_cluster_job:
     runs-on: ubuntu-latest
@@ -18,7 +17,8 @@ jobs:
     # - uses: ./ # Uses an action in the root directory
     - name: Reconcile Clusters
       id: reconcile
-      uses: shalb/cluster.dev@v0.1.4 # Cluster.dev release tag
+      uses: shalb/cluster.dev@aws_account_precise_permissions
+     #uses: shalb/cluster.dev@v0.1.4 # Cluster.dev release tag
       with:
         cluster-config: './.cluster.dev/'
         cloud-user: ${{ secrets.aws_access_key_id }}
