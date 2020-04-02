@@ -17,8 +17,7 @@ jobs:
     # - uses: ./ # Uses an action in the root directory
     - name: Reconcile Clusters
       id: reconcile
-      uses: shalb/cluster.dev@aws_account_precise_permissions
-     #uses: shalb/cluster.dev@v0.1.4 # Cluster.dev release tag
+      uses: shalb/cluster.dev@v0.1.4 # Cluster.dev release tag
       with:
         cluster-config: './.cluster.dev/'
         cloud-user: ${{ secrets.aws_access_key_id }}
@@ -26,3 +25,6 @@ jobs:
     # Use the output from the `reconcile` step
     - name: Get the Cluster Credentials
       run: echo -e "\n\033[1;32m${{ steps.reconcile.outputs.ssh }}\n\033[1;32m${{ steps.reconcile.outputs.kubeconfig }}\n\033[1;32m${{ steps.reconcile.outputs.argocd }}"
+env:
+  VERBOSE_LVL: DEBUG
+
