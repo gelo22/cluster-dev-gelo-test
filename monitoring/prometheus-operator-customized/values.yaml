@@ -1,8 +1,3 @@
-prometheus-operator:
-  grafana:
-    adminPassword: lAKldkasdafhSJDHkjdhwiejlDSKJDn!jdsid
-
-
 namespace: monitoring
 env: dev
 cluster_name: gelo22_minicube
@@ -10,57 +5,56 @@ project: gelo22_cluser_dev
 base_domain: dev-gelo22.cluster.dev
 
 
-alertmanager:
-  alertmanagerSpec:
-    externalUrl: https://alertmanager.dev-gelo22.cluster.dev
+prometheus-operator:
+  alertmanager:
+    alertmanagerSpec:
+      externalUrl: https://alertmanager.dev-gelo22.cluster.dev
 
 
-nodeExporter:
-  serviceMonitor:
-    relabelings:
-      - sourceLabels: [__meta_kubernetes_endpoint_node_name]
-        targetLabel: node
+  nodeExporter:
+    serviceMonitor:
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_endpoint_node_name]
+          targetLabel: node
 
 
-grafana:
-  enabled: true
-  adminUser: admin
-  adminPassword: lAKldkasdafhSJDHkjdhwiejlDSKJDn!jdsid
-  grafana.ini:
-    server:
-      root_url: https://grafana.dev-gelo22.cluster.dev
+  grafana:
+    enabled: true
+    adminUser: admin
+    adminPassword: lAKldkasdafhSJDHkjdhwiejlDSKJDn!jdsid
+    grafana.ini:
+      server:
+        root_url: https://grafana.dev-gelo22.cluster.dev
 
 
-prometheus:
-  prometheusSpec:
-    externalUrl: https://prometheus.dev-gelo22.cluster.dev
-    externalLabels:
-      cluster_name: gelo22_minicube
-      server_env: dev
-      project: gelo22_cluser_dev
+  prometheus:
+    prometheusSpec:
+      externalUrl: https://prometheus.dev-gelo22.cluster.dev
+      externalLabels:
+        cluster_name: gelo22_minicube
+        server_env: dev
+        project: gelo22_cluser_dev
 
-## Disable scraping of components which are not present as pods in AWS EKS
+  ## Disable scraping of components which are not present as pods in AWS EKS
 
-## Component scraping the kube api server
-##
-#kubeApiServer:
-#  enabled: false
+  ## Component scraping the kube api server
+  ##
+  #kubeApiServer:
+  #  enabled: false
 
-## Component scraping the kube controller manager
-##
-#kubeControllerManager:
-#  enabled: false
+  ## Component scraping the kube controller manager
+  ##
+  #kubeControllerManager:
+  #  enabled: false
 
-## Component scraping etcd
-##
-#kubeEtcd:
-#  enabled: false
+  ## Component scraping etcd
+  ##
+  #kubeEtcd:
+  #  enabled: false
 
-## Component scraping kube scheduler
-##
-#kubeScheduler:
-#  enabled: false
+  ## Component scraping kube scheduler
+  ##
+  #kubeScheduler:
+  #  enabled: false
 
 
-## Component scraping node-exporter
-##
