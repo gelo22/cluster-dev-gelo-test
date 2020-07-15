@@ -1,7 +1,0 @@
-prometheus:
-  prometheusSpec:
-    externalUrl: https://{{ .Values.base_domain }}
-    externalLabels:
-      cluster_name: {{ .Values.cluster_name }}
-      server_env: {{ .Values.env }}
-      project: {{ .Values.project }}
