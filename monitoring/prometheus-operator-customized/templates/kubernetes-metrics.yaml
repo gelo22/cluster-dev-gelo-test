@@ -84,7 +84,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk($limit, sum(label_replace(container_memory_rss{node=~\"$node_name\",pod_name=~\"$service_name.*\",namespace=~\"$namespace\",container_name!~\"^POD$|^$\"}, \"service_name\", \"$1\", \"pod_name\", \"(.*)-[0-9a-z]{4}.*\")) by (service_name))",
+              "expr": "topk($limit, sum(label_replace(container_memory_rss{node=~\"$node\",pod=~\"$service_name.*\",namespace=~\"$namespace\",container!~\"^POD$|^$\"}, \"service_name\", \"$1\", \"pod\", \"(.*)-[0-9a-z]{4}.*\")) by (service_name))",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -183,7 +183,7 @@ data:
           "steppedLine": false,
           "targets": [
             {
-              "expr": "topk($limit, sum(label_replace(rate(container_cpu_usage_seconds_total{node=~\"$node_name\",pod_name=~\"$service_name.*\",namespace=~\"$namespace\",container_name!~\"^POD$|^$\"}[5m]), \"service_name\", \"$1\", \"pod_name\", \"(.*)-[0-9a-z]{4}.*\")) by (service_name))",
+              "expr": "topk($limit, sum(label_replace(rate(container_cpu_usage_seconds_total{node=~\"$node\",pod=~\"$service_name.*\",namespace=~\"$namespace\",container!~\"^POD$|^$\"}[5m]), \"service_name\", \"$1\", \"pod\", \"(.*)-[0-9a-z]{4}.*\")) by (service_name))",
               "format": "time_series",
               "hide": false,
               "interval": "",
@@ -887,7 +887,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "kube_node_status_condition{node=~\"$node_name\",condition=\"Ready\",status=\"true\"}",
+                  "expr": "kube_node_status_condition{node=~\"$node\",condition=\"Ready\",status=\"true\"}",
                   "format": "time_series",
                   "interval": "",
                   "intervalFactor": 1,
@@ -989,7 +989,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, kube_node_status_condition{node=~\"$node_name\",condition!=\"Ready\",status=\"true\"})",
+                  "expr": "topk($limit, kube_node_status_condition{node=~\"$node\",condition!=\"Ready\",status=\"true\"})",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -1101,13 +1101,13 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "bottomk($limit, container_last_seen{node=~\"$node_name\",pod_name=~\"$service_name.*\",namespace=~\"$namespace\",pod_name=~\"$pod_name\",container_name!~\"^POD$|^$\",container_name=~\"$container_name\"} - container_start_time_seconds)",
+                  "expr": "bottomk($limit, container_last_seen{node=~\"$node\",pod=~\"$service_name.*\",namespace=~\"$namespace\",pod=~\"$pod\",container!~\"^POD$|^$\",container=~\"$container\"} - container_start_time_seconds)",
                   "format": "time_series",
                   "hide": false,
                   "instant": false,
                   "interval": "",
                   "intervalFactor": 2,
-                  "legendFormat": "{{pod_name}} - {{container_name}}",
+                  "legendFormat": "{{pod}} - {{container}}",
                   "refId": "A"
                 }
               ],
@@ -1214,7 +1214,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, delta(kube_pod_container_status_restarts_total{namespace=~\"$namespace\",pod=~\"$pod_name\",container=~\"$container_name\"}[5m]))",
+                  "expr": "topk($limit, delta(kube_pod_container_status_restarts_total{namespace=~\"$namespace\",pod=~\"$pod\",container=~\"$container\"}[5m]))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -1327,7 +1327,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "bottomk($limit, kube_pod_status_phase{namespace=~\"$namespace\",pod=~\"$service_name.*\",pod=~\"$pod_name\"})",
+                  "expr": "bottomk($limit, kube_pod_status_phase{namespace=~\"$namespace\",pod=~\"$service_name.*\",pod=~\"$pod\"})",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -1424,7 +1424,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, kube_pod_status_ready{namespace=~\"$namespace\",pod=~\"$service_name.*\",pod=~\"$pod_name\"})",
+                  "expr": "topk($limit, kube_pod_status_ready{namespace=~\"$namespace\",pod=~\"$service_name.*\",pod=~\"$pod\"})",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -1521,7 +1521,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, kube_pod_status_scheduled{namespace=~\"$namespace\",pod=~\"$service_name.*\",pod=~\"$pod_name\"})",
+                  "expr": "topk($limit, kube_pod_status_scheduled{namespace=~\"$namespace\",pod=~\"$service_name.*\",pod=~\"$pod\"})",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -1619,7 +1619,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "bottomk($limit, kube_pod_container_status_ready{namespace=~\"$namespace\",pod=~\"$service_name.*\",pod=~\"$pod_name\"})",
+                  "expr": "bottomk($limit, kube_pod_container_status_ready{namespace=~\"$namespace\",pod=~\"$service_name.*\",pod=~\"$pod\"})",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -1737,7 +1737,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "(count(kube_pod_info{node=~\"$node_name\"}) by (node)) / (max(kube_node_status_capacity{resource=\"pods\"}) by (node)) * 100",
+                  "expr": "(count(kube_pod_info{node=~\"$node\"}) by (node)) / (max(kube_node_status_capacity{resource=\"pods\"}) by (node)) * 100",
                   "format": "time_series",
                   "interval": "",
                   "intervalFactor": 1,
@@ -1840,14 +1840,14 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "(max(kube_node_status_capacity{node=~\"$node_name\",resource=\"pods\"}) by (node)) - (count(kube_pod_info{node=~\"$node_name\"}) by (node))",
+                  "expr": "(max(kube_node_status_capacity{node=~\"$node\",resource=\"pods\"}) by (node)) - (count(kube_pod_info{node=~\"$node\"}) by (node))",
                   "format": "time_series",
                   "intervalFactor": 1,
                   "legendFormat": "{{node}}",
                   "refId": "A"
                 },
                 {
-                  "expr": "max(kube_node_status_capacity{node=~\"$node_name\",resource=\"pods\"})",
+                  "expr": "max(kube_node_status_capacity{node=~\"$node\",resource=\"pods\"})",
                   "format": "time_series",
                   "intervalFactor": 1,
                   "legendFormat": "Node capacity",
@@ -1957,7 +1957,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "up{job=\"node-exporter\",node=~\"$node_name\"}",
+                  "expr": "up{job=\"node-exporter\",node=~\"$node\"}",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -2054,7 +2054,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "bottomk($limit, node_scrape_collector_success{job=\"node-exporter\",node=~\"$node_name\"})",
+                  "expr": "bottomk($limit, node_scrape_collector_success{job=\"node-exporter\",node=~\"$node\"})",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -2974,12 +2974,12 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, rate(container_cpu_usage_seconds_total{node=~\"$node_name\",service=\"prometheus-operator-kubelet\",pod_name=~\"$service_name.*\",namespace=~\"$namespace\",pod_name=~\"$pod_name\",container_name!~\"^POD$|^$\",container_name=~\"$container_name\"}[5m]))",
+                  "expr": "topk($limit, rate(container_cpu_usage_seconds_total{node=~\"$node\",pod=~\"$service_name.*\",namespace=~\"$namespace\",pod=~\"$pod\",container!~\"^POD$|^$\",container=~\"$container\"}[5m]))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
                   "intervalFactor": 2,
-                  "legendFormat": "{{pod_name}} - {{container_name}}",
+                  "legendFormat": "{{pod}} - {{container}}",
                   "refId": "A"
                 }
               ],
@@ -3071,12 +3071,12 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, rate(container_cpu_system_seconds_total{node=~\"$node_name\",service=\"prometheus-operator-kubelet\",pod_name=~\"$service_name.*\",namespace=~\"$namespace\",pod_name=~\"$pod_name\",container_name!~\"^POD$|^$\",container_name=~\"$container_name\"}[5m]))",
+                  "expr": "topk($limit, rate(container_cpu_system_seconds_total{node=~\"$node\",pod=~\"$service_name.*\",namespace=~\"$namespace\",pod=~\"$pod\",container!~\"^POD$|^$\",container=~\"$container\"}[5m]))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
                   "intervalFactor": 2,
-                  "legendFormat": "{{pod_name}} - {{container_name}}",
+                  "legendFormat": "{{pod}} - {{container}}",
                   "refId": "A"
                 }
               ],
@@ -3168,12 +3168,12 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, rate(container_cpu_user_seconds_total{node=~\"$node_name\",service=\"prometheus-operator-kubelet\",pod_name=~\"$service_name.*\",namespace=~\"$namespace\",pod_name=~\"$pod_name\",container_name!~\"^POD$|^$\",container_name=~\"$container_name\"}[5m]))",
+                  "expr": "topk($limit, rate(container_cpu_user_seconds_total{node=~\"$node\",pod=~\"$service_name.*\",namespace=~\"$namespace\",pod=~\"$pod\",container!~\"^POD$|^$\",container=~\"$container\"}[5m]))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
                   "intervalFactor": 2,
-                  "legendFormat": "{{pod_name}} - {{container_name}}",
+                  "legendFormat": "{{pod}} - {{container}}",
                   "refId": "A"
                 }
               ],
@@ -3285,17 +3285,17 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, container_memory_rss{node=~\"$node_name\",service=\"prometheus-operator-kubelet\",pod_name=~\"$service_name.*\",namespace=~\"$namespace\",pod_name=~\"$pod_name\",container_name!~\"^POD$|^$\",container_name=~\"$container_name\"})",
+                  "expr": "topk($limit, container_memory_rss{node=~\"$node\",pod=~\"$service_name.*\",namespace=~\"$namespace\",pod=~\"$pod\",container!~\"^POD$|^$\",container=~\"$container\"})",
                   "format": "time_series",
                   "hide": false,
                   "instant": false,
                   "interval": "",
                   "intervalFactor": 2,
-                  "legendFormat": "{{pod_name}} - {{container_name}}",
+                  "legendFormat": "{{pod}} - {{container}}",
                   "refId": "B"
                 },
                 {
-                  "expr": "max(container_spec_memory_limit_bytes{node=~\"$node_name\",pod_name=~\"$service_name.*\",namespace=~\"$namespace\",pod_name=~\"$pod_name\",container_name!~\"^POD$|^$\",container_name=~\"$container_name\"})",
+                  "expr": "max(container_spec_memory_limit_bytes{node=~\"$node\",pod=~\"$service_name.*\",namespace=~\"$namespace\",pod=~\"$pod\",container!~\"^POD$|^$\",container=~\"$container\"})",
                   "format": "time_series",
                   "hide": false,
                   "instant": false,
@@ -3392,13 +3392,13 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, (container_memory_rss{node=~\"$node_name\",service=\"prometheus-operator-kubelet\",pod_name=~\"$service_name.*\",namespace=~\"$namespace\",pod_name=~\"$pod_name\",container_name!~\"^POD$|^$\",container_name=~\"$container_name\"} / (container_spec_memory_limit_bytes - 1) * 100) > 0)",
+                  "expr": "topk($limit, (container_memory_rss{node=~\"$node\",pod=~\"$service_name.*\",namespace=~\"$namespace\",pod=~\"$pod\",container!~\"^POD$|^$\",container=~\"$container\"} / (container_spec_memory_limit_bytes - 1) * 100) > 0)",
                   "format": "time_series",
                   "hide": false,
                   "instant": false,
                   "interval": "",
                   "intervalFactor": 2,
-                  "legendFormat": "{{pod_name}} - {{container_name}}",
+                  "legendFormat": "{{pod}} - {{container}}",
                   "refId": "B"
                 }
               ],
@@ -3489,13 +3489,13 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, rate(container_memory_failures_total{node=~\"$node_name\",service=\"prometheus-operator-kubelet\",pod_name=~\"$service_name.*\",namespace=~\"$namespace\",pod_name=~\"$pod_name\",container_name!~\"^POD$|^$\",container_name=~\"$container_name\"}[5m]))",
+                  "expr": "topk($limit, rate(container_memory_failures_total{node=~\"$node\",pod=~\"$service_name.*\",namespace=~\"$namespace\",pod=~\"$pod\",container!~\"^POD$|^$\",container=~\"$container\"}[5m]))",
                   "format": "time_series",
                   "hide": false,
                   "instant": false,
                   "interval": "",
                   "intervalFactor": 2,
-                  "legendFormat": "{{pod_name}} - {{container_name}} - {{type}} - {{scope}}",
+                  "legendFormat": "{{pod}} - {{container}} - {{type}} - {{scope}}",
                   "refId": "B"
                 }
               ],
@@ -3586,13 +3586,13 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, rate(container_memory_failcnt{node=~\"$node_name\",service=\"prometheus-operator-kubelet\",pod_name=~\"$service_name.*\",namespace=~\"$namespace\",pod_name=~\"$pod_name\",container_name!~\"^POD$|^$\",container_name=~\"$container_name\"}[5m]))",
+                  "expr": "topk($limit, rate(container_memory_failcnt{node=~\"$node\",pod=~\"$service_name.*\",namespace=~\"$namespace\",pod=~\"$pod\",container!~\"^POD$|^$\",container=~\"$container\"}[5m]))",
                   "format": "time_series",
                   "hide": false,
                   "instant": false,
                   "interval": "",
                   "intervalFactor": 2,
-                  "legendFormat": "{{pod_name}} - {{container_name}}",
+                  "legendFormat": "{{pod}} - {{container}}",
                   "refId": "B"
                 }
               ],
@@ -3698,7 +3698,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "topk($limit, 1 - sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"idle\",node=~\"$node_name\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"idle\"}) without (cpu,mode))",
+                  "expr": "topk($limit, 1 - sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"idle\",node=~\"$node\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"idle\"}) without (cpu,mode))",
                   "format": "time_series",
                   "intervalFactor": 1,
                   "legendFormat": "{{node}}",
@@ -3814,7 +3814,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"system\",node=~\"$node_name\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"system\"}) without (cpu,mode)))",
+                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"system\",node=~\"$node\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"system\"}) without (cpu,mode)))",
                   "format": "time_series",
                   "hide": false,
                   "instant": false,
@@ -3825,7 +3825,7 @@ data:
                   "step": 20
                 },
                 {
-                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"user\",node=~\"$node_name\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"user\"}) without (cpu,mode)))",
+                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"user\",node=~\"$node\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"user\"}) without (cpu,mode)))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -3835,7 +3835,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"nice\",node=~\"$node_name\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"nice\"}) without (cpu,mode)))",
+                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"nice\",node=~\"$node\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"nice\"}) without (cpu,mode)))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -3845,7 +3845,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"idle\",node=~\"$node_name\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"idle\"}) without (cpu,mode)))",
+                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"idle\",node=~\"$node\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"idle\"}) without (cpu,mode)))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -3855,7 +3855,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"iowait\",node=~\"$node_name\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"iowait\"}) without (cpu,mode)))",
+                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"iowait\",node=~\"$node\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"iowait\"}) without (cpu,mode)))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -3865,7 +3865,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"irq\",node=~\"$node_name\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"irq\"}) without (cpu,mode)))",
+                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"irq\",node=~\"$node\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"irq\"}) without (cpu,mode)))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -3875,7 +3875,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"softirq\",node=~\"$node_name\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"softirq\"}) without (cpu,mode)))",
+                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"softirq\",node=~\"$node\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"softirq\"}) without (cpu,mode)))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -3885,7 +3885,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"steal\",node=~\"$node_name\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"steal\"}) without (cpu,mode)))",
+                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"steal\",node=~\"$node\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"steal\"}) without (cpu,mode)))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -3895,7 +3895,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"guest\",node=~\"$node_name\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"guest\"}) without (cpu,mode)))",
+                  "expr": "avg(topk($limit, sum(irate(node_cpu_seconds_total{job=\"node-exporter\",mode=\"guest\",node=~\"$node\"}[5m])) without (cpu,mode) / count(node_cpu_seconds_total{mode=\"guest\"}) without (cpu,mode)))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4014,7 +4014,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "node_load1{job=\"node-exporter\",node=~\"$node_name\"}",
+                  "expr": "node_load1{job=\"node-exporter\",node=~\"$node\"}",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4023,7 +4023,7 @@ data:
                   "refId": "A"
                 },
                 {
-                  "expr": "max(count(node_cpu_seconds_total{mode=\"system\",job=\"node-exporter\",node=~\"$node_name\"}) without (cpu,mode))",
+                  "expr": "max(count(node_cpu_seconds_total{mode=\"system\",job=\"node-exporter\",node=~\"$node\"}) without (cpu,mode))",
                   "format": "time_series",
                   "hide": false,
                   "intervalFactor": 1,
@@ -4126,7 +4126,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "node_time_seconds{job=\"node-exporter\",node=~\"$node_name\"} - node_boot_time_seconds",
+                  "expr": "node_time_seconds{job=\"node-exporter\",node=~\"$node\"} - node_boot_time_seconds",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4237,7 +4237,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "(node_memory_MemTotal_bytes{job=\"node-exporter\",node=~\"$node_name\"} - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes",
+                  "expr": "(node_memory_MemTotal_bytes{job=\"node-exporter\",node=~\"$node\"} - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes",
                   "format": "time_series",
                   "hide": false,
                   "intervalFactor": 1,
@@ -4338,7 +4338,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "node_memory_MemTotal_bytes{job=\"node-exporter\",node=~\"$node_name\"} - node_memory_MemAvailable_bytes",
+                  "expr": "node_memory_MemTotal_bytes{job=\"node-exporter\",node=~\"$node\"} - node_memory_MemAvailable_bytes",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4347,7 +4347,7 @@ data:
                   "refId": "B"
                 },
                 {
-                  "expr": "max(node_memory_MemTotal_bytes{job=\"node-exporter\",node=~\"$node_name\"})",
+                  "expr": "max(node_memory_MemTotal_bytes{job=\"node-exporter\",node=~\"$node\"})",
                   "format": "time_series",
                   "hide": false,
                   "intervalFactor": 1,
@@ -4473,7 +4473,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "avg(topk($limit, node_memory_MemTotal_bytes{job=\"node-exporter\",node=~\"$node_name\"} - node_memory_MemFree_bytes - node_memory_Buffers_bytes - node_memory_Cached_bytes - node_memory_Slab_bytes - node_memory_PageTables_bytes - node_memory_SwapCached_bytes))",
+                  "expr": "avg(topk($limit, node_memory_MemTotal_bytes{job=\"node-exporter\",node=~\"$node\"} - node_memory_MemFree_bytes - node_memory_Buffers_bytes - node_memory_Cached_bytes - node_memory_Slab_bytes - node_memory_PageTables_bytes - node_memory_SwapCached_bytes))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4483,7 +4483,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, node_memory_PageTables_bytes{job=\"node-exporter\",node=~\"$node_name\"}))",
+                  "expr": "avg(topk($limit, node_memory_PageTables_bytes{job=\"node-exporter\",node=~\"$node\"}))",
                   "format": "time_series",
                   "hide": false,
                   "intervalFactor": 2,
@@ -4492,7 +4492,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, node_memory_SwapCached_bytes{job=\"node-exporter\",node=~\"$node_name\"}))",
+                  "expr": "avg(topk($limit, node_memory_SwapCached_bytes{job=\"node-exporter\",node=~\"$node\"}))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4502,7 +4502,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, node_memory_Slab_bytes{job=\"node-exporter\",node=~\"$node_name\"}))",
+                  "expr": "avg(topk($limit, node_memory_Slab_bytes{job=\"node-exporter\",node=~\"$node\"}))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4512,7 +4512,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, node_memory_Cached_bytes{job=\"node-exporter\",node=~\"$node_name\"}))",
+                  "expr": "avg(topk($limit, node_memory_Cached_bytes{job=\"node-exporter\",node=~\"$node\"}))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4522,7 +4522,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, node_memory_Buffers_bytes{job=\"node-exporter\",node=~\"$node_name\"}))",
+                  "expr": "avg(topk($limit, node_memory_Buffers_bytes{job=\"node-exporter\",node=~\"$node\"}))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4532,7 +4532,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, node_memory_MemFree_bytes{job=\"node-exporter\",node=~\"$node_name\"}))",
+                  "expr": "avg(topk($limit, node_memory_MemFree_bytes{job=\"node-exporter\",node=~\"$node\"}))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4542,7 +4542,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, node_memory_SwapTotal_bytes{job=\"node-exporter\",node=~\"$node_name\"} - node_memory_SwapFree_bytes))",
+                  "expr": "avg(topk($limit, node_memory_SwapTotal_bytes{job=\"node-exporter\",node=~\"$node\"} - node_memory_SwapFree_bytes))",
                   "format": "time_series",
                   "hide": false,
                   "intervalFactor": 2,
@@ -4551,7 +4551,7 @@ data:
                   "step": 240
                 },
                 {
-                  "expr": "avg(topk($limit, node_memory_HardwareCorrupted_bytes{job=\"node-exporter\",node=~\"$node_name\"}))",
+                  "expr": "avg(topk($limit, node_memory_HardwareCorrupted_bytes{job=\"node-exporter\",node=~\"$node\"}))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4667,7 +4667,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "irate(node_network_receive_bytes_total{job=\"node-exporter\",node=~\"$node_name\"}[5m])",
+                  "expr": "irate(node_network_receive_bytes_total{job=\"node-exporter\",node=~\"$node\"}[5m])",
                   "format": "time_series",
                   "hide": false,
                   "intervalFactor": 1,
@@ -4675,7 +4675,7 @@ data:
                   "refId": "C"
                 },
                 {
-                  "expr": "irate(node_network_transmit_bytes_total{job=\"node-exporter\",node=~\"$node_name\"}[5m])",
+                  "expr": "irate(node_network_transmit_bytes_total{job=\"node-exporter\",node=~\"$node\"}[5m])",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4776,7 +4776,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "irate(node_network_receive_packets_total{job=\"node-exporter\",node=~\"$node_name\"}[5m])",
+                  "expr": "irate(node_network_receive_packets_total{job=\"node-exporter\",node=~\"$node\"}[5m])",
                   "format": "time_series",
                   "hide": false,
                   "intervalFactor": 1,
@@ -4784,7 +4784,7 @@ data:
                   "refId": "C"
                 },
                 {
-                  "expr": "irate(node_network_transmit_packets_total{job=\"node-exporter\",node=~\"$node_name\"}[5m])",
+                  "expr": "irate(node_network_transmit_packets_total{job=\"node-exporter\",node=~\"$node\"}[5m])",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4896,7 +4896,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "100 * ( node_filesystem_avail_bytes{job=\"node-exporter\",node=~\"$node_name\"} / (node_filesystem_size_bytes - ( node_filesystem_free_bytes - node_filesystem_avail_bytes)))",
+                  "expr": "100 * ( node_filesystem_avail_bytes{job=\"node-exporter\",node=~\"$node\"} / (node_filesystem_size_bytes - ( node_filesystem_free_bytes - node_filesystem_avail_bytes)))",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -4993,7 +4993,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "node_filesystem_free_bytes{job=\"node-exporter\",node=~\"$node_name\"}",
+                  "expr": "node_filesystem_free_bytes{job=\"node-exporter\",node=~\"$node\"}",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -5177,7 +5177,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "irate(node_disk_reads_completed_total{job=\"node-exporter\",node=~\"$node_name\"}[5m])",
+                  "expr": "irate(node_disk_reads_completed_total{job=\"node-exporter\",node=~\"$node\"}[5m])",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -5186,7 +5186,7 @@ data:
                   "refId": "C"
                 },
                 {
-                  "expr": "irate(node_disk_writes_completed_total{job=\"node-exporter\",node=~\"$node_name\"}[5m])",
+                  "expr": "irate(node_disk_writes_completed_total{job=\"node-exporter\",node=~\"$node\"}[5m])",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -5369,7 +5369,7 @@ data:
               "steppedLine": false,
               "targets": [
                 {
-                  "expr": "irate(node_disk_read_bytes_total{job=\"node-exporter\",node=~\"$node_name\"}[5m])",
+                  "expr": "irate(node_disk_read_bytes_total{job=\"node-exporter\",node=~\"$node\"}[5m])",
                   "format": "time_series",
                   "hide": false,
                   "intervalFactor": 1,
@@ -5377,7 +5377,7 @@ data:
                   "refId": "C"
                 },
                 {
-                  "expr": "irate(node_disk_written_bytes_total{job=\"node-exporter\",node=~\"$node_name\"}[5m])",
+                  "expr": "irate(node_disk_written_bytes_total{job=\"node-exporter\",node=~\"$node\"}[5m])",
                   "format": "time_series",
                   "hide": false,
                   "interval": "",
@@ -5474,7 +5474,7 @@ data:
             "index": -1,
             "label": "Node",
             "multi": true,
-            "name": "node_name",
+            "name": "node",
             "options": [],
             "query": "label_values(node_load1,node)",
             "refresh": 1,
@@ -5495,7 +5495,7 @@ data:
               "value": "$__all"
             },
             "datasource": "$data_source",
-            "definition": "label_values(container_cpu_usage_seconds_total{node=~\"$node_name\"},namespace)",
+            "definition": "label_values(container_cpu_usage_seconds_total{node=~\"$node\"},namespace)",
             "hide": 0,
             "includeAll": true,
             "index": -1,
@@ -5503,7 +5503,7 @@ data:
             "multi": false,
             "name": "namespace",
             "options": [],
-            "query": "label_values(container_cpu_usage_seconds_total{node=~\"$node_name\"},namespace)",
+            "query": "label_values(container_cpu_usage_seconds_total{node=~\"$node\"},namespace)",
             "refresh": 1,
             "regex": "",
             "skipUrlSync": false,
@@ -5523,7 +5523,7 @@ data:
               ]
             },
             "datasource": "$data_source",
-            "definition": "label_values(container_cpu_system_seconds_total{node=~\"$node_name\",namespace=~\"$namespace\"},pod_name)",
+            "definition": "label_values(container_cpu_system_seconds_total{node=~\"$node\",namespace=~\"$namespace\"},pod)",
             "hide": 0,
             "includeAll": true,
             "index": -1,
@@ -5531,7 +5531,7 @@ data:
             "multi": true,
             "name": "service_name",
             "options": [],
-            "query": "label_values(container_cpu_system_seconds_total{node=~\"$node_name\",namespace=~\"$namespace\"},pod_name)",
+            "query": "label_values(container_cpu_system_seconds_total{node=~\"$node\",namespace=~\"$namespace\"},pod)",
             "refresh": 1,
             "regex": "/(.*)\\-[0-9a-z]{4}/",
             "skipUrlSync": false,
@@ -5549,15 +5549,15 @@ data:
               "value": "$__all"
             },
             "datasource": "$data_source",
-            "definition": "label_values(container_cpu_usage_seconds_total{node=~\"$node_name\",namespace=~\"$namespace\",pod_name=~\"$service_name.*\"},pod_name)",
+            "definition": "label_values(container_cpu_usage_seconds_total{node=~\"$node\",namespace=~\"$namespace\",pod=~\"$service_name.*\"},pod)",
             "hide": 0,
             "includeAll": true,
             "index": -1,
             "label": "Pod",
             "multi": true,
-            "name": "pod_name",
+            "name": "pod",
             "options": [],
-            "query": "label_values(container_cpu_usage_seconds_total{node=~\"$node_name\",namespace=~\"$namespace\",pod_name=~\"$service_name.*\"},pod_name)",
+            "query": "label_values(container_cpu_usage_seconds_total{node=~\"$node\",namespace=~\"$namespace\",pod=~\"$service_name.*\"},pod)",
             "refresh": 1,
             "regex": "",
             "skipUrlSync": false,
@@ -5577,15 +5577,15 @@ data:
               ]
             },
             "datasource": "$data_source",
-            "definition": "label_values(container_cpu_usage_seconds_total{node=~\"$node_name\",container_name!~\"POD|^$\",namespace=~\"$namespace\",pod_name=~\"$service_name.*\",pod_name=~\"$pod_name\"},container_name)",
+            "definition": "label_values(container_cpu_usage_seconds_total{node=~\"$node\",container!~\"POD|^$\",namespace=~\"$namespace\",pod=~\"$service_name.*\",pod=~\"$pod\"},container)",
             "hide": 0,
             "includeAll": true,
             "index": -1,
             "label": "Container",
             "multi": true,
-            "name": "container_name",
+            "name": "container",
             "options": [],
-            "query": "label_values(container_cpu_usage_seconds_total{node=~\"$node_name\",container_name!~\"POD|^$\",namespace=~\"$namespace\",pod_name=~\"$service_name.*\",pod_name=~\"$pod_name\"},container_name)",
+            "query": "label_values(container_cpu_usage_seconds_total{node=~\"$node\",container!~\"POD|^$\",namespace=~\"$namespace\",pod=~\"$service_name.*\",pod=~\"$pod\"},container)",
             "refresh": 1,
             "regex": "",
             "skipUrlSync": false,
