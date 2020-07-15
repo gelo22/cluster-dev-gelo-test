@@ -1,3 +1,4 @@
+namespace: monitoring
 env: dev
 cluster_name: gelo22_minicube
 project: gelo22_cluser_dev
