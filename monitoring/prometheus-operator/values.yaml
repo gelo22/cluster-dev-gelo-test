@@ -1,0 +1,60 @@
+env: dev
+cluster_name: gelo22_minicube
+project: gelo22_cluser_dev
+base_domain: dev-gelo22.cluster.dev
+
+
+alertmanager:
+  alertmanagerSpec:
+    externalUrl: https://{{ .Values.base_domain }}
+
+
+## Disable scraping of components which are not present as pods in AWS EKS
+
+## Component scraping the kube api server
+##
+#kubeApiServer:
+#  enabled: false
+
+## Component scraping the kube controller manager
+##
+#kubeControllerManager:
+#  enabled: false
+
+## Component scraping etcd
+##
+#kubeEtcd:
+#  enabled: false
+
+## Component scraping kube scheduler
+##
+#kubeScheduler:
+#  enabled: false
+
+
+## Component scraping node-exporter
+##
+nodeExporter:
+  serviceMonitor:
+    relabelings:
+      - sourceLabels: [__meta_kubernetes_endpoint_node_name]
+        targetLabel: node
+
+
+grafana:
+  enabled: true
+  adminUser: admin
+  adminPassword: lAKldkasdafhSJDHkjdhwiejlDSKJDn!jdsid
+  grafana.ini:
+    server:
+      root_url: https://{{ .Values.base_domain }}
+
+
+prometheus:
+  prometheusSpec:
+    externalUrl: https://{{ .Values.base_domain }}
+    externalLabels:
+      cluster_name: {{ .Values.cluster_name }}
+      server_env: {{ .Values.env }}
+      project: {{ .Values.project }}
+
