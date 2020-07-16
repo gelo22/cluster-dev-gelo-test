@@ -8,7 +8,7 @@ spec:
     namespace: monitoring
     server: 'https://kubernetes.default.svc'
   source:
-    path: monitoring/prometheus-operator-customized/
+    path: kubernetes/charts/prometheus-operator-customized/
     repoURL: 'https://github.com/gelo22/cluster-dev-gelo-test'
     targetRevision: master
   project: default
