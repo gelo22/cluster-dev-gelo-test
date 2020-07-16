@@ -14,7 +14,7 @@ prometheus-operator:
   grafana:
     enabled: true
    #adminUser: admin
-   #adminPassword: prometheus-oper
+   #adminPassword: prom-operator
     grafana.ini:
       server:
         root_url: https://grafana.NAME-REPO_NAME.cluster.dev
