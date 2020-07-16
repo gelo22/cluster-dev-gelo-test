@@ -2,7 +2,7 @@ on:
   push:
     paths:
       - '.cluster.dev/aws-minikube.yaml'
-      - 'kubernetes/apps/*.yaml
+      - 'kubernetes/apps/*.yaml'
     branches:
       - master
 jobs:
