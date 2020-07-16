@@ -1,0 +1,12 @@
+project: default
+source:
+  repoURL: 'https://github.com/gelo22/cluster-dev-gelo-test'
+  path: monitoring/prometheus-operator-customized/
+  targetRevision: master
+destination:
+  server: 'https://kubernetes.default.svc'
+  namespace: monitoring
+syncPolicy:
+  automated:
+    prune: true
+    selfHeal: true
