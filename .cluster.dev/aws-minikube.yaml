@@ -1,6 +1,6 @@
 cluster:
- #installed: true
-  installed: false
+  installed: true
+ #installed: false
   name: dev
   cloud:
     provider: aws
@@ -14,4 +14,4 @@ cluster:
     nginx-ingress: true
     cert-manager: true
   apps:
-    - /kubernetes/apps
+    - /kubernetes/apps/monitoring
