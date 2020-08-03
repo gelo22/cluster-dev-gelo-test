@@ -9,7 +9,9 @@ spec:
     server: 'https://kubernetes.default.svc'
   source:
     path: ./logging/
-    repoURL: 'https://github.com/gelo22/cluster-dev'
+    repoURL: 'https://github.com/gelo22/cluster-dev-gelo-test'
+    targetRevision: master
+  project: default
   syncPolicy:
     automated:
       prune: true
