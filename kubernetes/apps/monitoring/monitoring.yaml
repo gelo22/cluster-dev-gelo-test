@@ -11,6 +11,15 @@ spec:
     path: ./
     repoURL: 'https://github.com/shalb/cluster.dev-monitoring'
     targetRevision: update_to_9.3.2
+    helm:
+      values: |
+        prometheus:
+          prometheusSpec:
+            externalLabels:
+              cluster_name: cluster-dev-test
+              server_env: test
+              project: test
+            externalUrl: "https://prometheus.local.lan"
   project: default
   syncPolicy:
     automated:
