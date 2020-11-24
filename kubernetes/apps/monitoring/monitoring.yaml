@@ -10,7 +10,7 @@ spec:
   source:
     path: ./
     repoURL: 'https://github.com/shalb/cluster.dev-monitoring'
-    targetRevision: chart_rename
+    targetRevision: update_to_9.3.2
   project: default
   syncPolicy:
     automated:
