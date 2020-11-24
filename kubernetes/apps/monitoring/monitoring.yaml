@@ -17,7 +17,7 @@ spec:
           prometheusSpec:
             externalLabels:
               cluster_name: cluster-dev-test
-              server_env: test
+              server_env: test-env
               project: test
             externalUrl: "https://prometheus.local.lan"
   project: default
