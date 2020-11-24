@@ -1,18 +1,18 @@
-cluster:
- #installed: true
-  installed: false
-  name: dev
-  cloud:
-    provider: aws
-    region: us-east-1
-    vpc: default
-    domain: cluster.dev
-    provisioner:
-      type: minikube
-      instanceType: m5.large
-  addons:
-    nginx-ingress: true
-    cert-manager: true
-  apps:
-    - /kubernetes/apps/monitoring
-    - /kubernetes/apps/logging
+installed: true
+name: dev-minikube
+provider:
+  type: aws
+  region: us-east-1
+  availability_zones:
+    - us-east-1a
+    - us-east-1b
+  vpc: default
+  domain: cluster.dev
+  provisioner:
+    type: minikube
+    instanceType: m5.large
+addons:
+  nginx-ingress: true
+  cert-manager: true
+apps: []
+# - /kubernetes/apps/samples
