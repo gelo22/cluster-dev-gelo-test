@@ -4,8 +4,8 @@ provider:
   type: aws
   region: us-east-1
   availability_zones:
-    - us-east-1a
     - us-east-1b
+    - us-east-1c
   vpc: default
   domain: cluster.dev
   provisioner:
@@ -14,5 +14,5 @@ provider:
 addons:
   nginx-ingress: true
   cert-manager: true
-apps: []
-# - /kubernetes/apps/samples
+apps:
+  - /kubernetes/apps/samples
