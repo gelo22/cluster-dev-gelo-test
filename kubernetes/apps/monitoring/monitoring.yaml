@@ -6,21 +6,188 @@ metadata:
 spec:
   destination:
     namespace: monitoring
-    server: 'https://kubernetes.default.svc'
+    server: https://kubernetes.default.svc
   source:
     path: ./
-    repoURL: 'https://github.com/shalb/cluster.dev-monitoring'
-    targetRevision: master
+    repoURL: https://github.com/shalb/cluster.dev-monitoring
+    targetRevision: prometheus-operator-9.3.2
     helm:
       values: |
         prometheus-operator:
+          kubeControllerManager:
+            enabled: false
+          kubeScheduler:
+            enabled: false
+          prometheusOperator:
+            admissionWebhooks:
+              failurePolicy: Fail
+              enabled: false
+            tlsProxy:
+              enabled: false
+          #
+          grafana:
+            adminUser: admin
+            adminPassword: example_password
+            #ingress:
+            #  enabled: true
+            #  annotations:
+            #    cert-manager.io/cluster-issuer: letsencrypt-prod
+            #  path: /
+            #  hosts:
+            #    - grafana.example.com
+            #  tls:
+            #  - hosts:
+            #    - grafana.example.com
+            #    secretName: grafana-tls-secret
+            #grafana.ini:
+            #  server:
+            #    root_url: https://grafana.example.com
+            #persistence:
+            #  enabled: true
+            #  size: 5Gi
+          #
           prometheus:
+            #ingress:
+            #  enabled: true
+            #  annotations:
+            #    cert-manager.io/cluster-issuer: letsencrypt-prod
+            #    nginx.ingress.kubernetes.io/auth-type: basic
+            #    nginx.ingress.kubernetes.io/auth-secret: prometheus-basic-auth
+            #    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+            #  hosts:
+            #    - prometheus.example.com
+            #  paths:
+            #    - /
+            #  tls:
+            #    - secretName: prometheus-tls
+            #      hosts:
+            #        - prometheus.example.com
             prometheusSpec:
               externalLabels:
-                cluster_name: cluster-dev-test
-                server_env: test
-                project: test
-              externalUrl: "https://prometheus.local.lan"
+                cluster_name: cluster-name
+                server_env: prod
+                project: project-name
+              externalUrl: https://prometheus.example.com
+              retention: 1d
+              #storageSpec:
+              #  volumeClaimTemplate:
+              #    spec:
+              #      accessModes: ["ReadWriteOnce"]
+              #      resources:
+              #        requests:
+              #          storage: 50Gi
+          #
+          alertmanager:
+            #ingress:
+            #  enabled: true
+            #  annotations:
+            #    cert-manager.io/cluster-issuer: letsencrypt-prod
+            #    nginx.ingress.kubernetes.io/auth-type: basic
+            #    nginx.ingress.kubernetes.io/auth-secret: prometheus-basic-auth
+            #    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+            #  hosts:
+            #    - alertmanager.example.com
+            #  paths:
+            #    - /
+            #  tls:
+            #    - secretName: alertmanager-tls
+            #      hosts:
+            #        - alertmanager.example.com
+            alertmanagerSpec:
+              externalUrl: https://alertmanager.example.com
+              #storage:
+              #  volumeClaimTemplate:
+              #    spec:
+              #      accessModes: ["ReadWriteOnce"]
+              #      resources:
+              #        requests:
+              #          storage: 1Gi
+            config:
+              global:
+                resolve_timeout: 5m
+              route:
+                group_by: [...]
+                group_wait: 9s
+                group_interval: 9s
+                repeat_interval: 120h
+                receiver: blackhole
+                routes:
+                # Alerting disabled - enable only for prod
+                - receiver: blackhole
+                  group_by: [...]
+                  repeat_interval: 120h
+                #
+                #- receiver: customer_slack
+                #  group_by: [...]
+                #  continue: true
+                #  repeat_interval: 120h
+                #
+                # Non needed alerts disabled
+                - receiver: blackhole
+                  group_by: [...]
+                  match_re:
+                    alertname: "CPUThrottlingHigh"
+                  repeat_interval: 120h
+                #
+                - receiver: opsgenie_info
+                  group_by: [...]
+                  match_re:
+                    severity: "info"
+                  continue: true
+                  repeat_interval: 120h
+                #
+                - receiver: opsgenie_warning
+                  group_by: [...]
+                  match_re:
+                    severity: "warning"
+                  continue: true
+                  repeat_interval: 120h
+                #
+                - receiver: opsgenie_critical
+                  group_by: [...]
+                  match_re:
+                    severity: "critical"
+                  continue: true
+                  repeat_interval: 120h
+              #
+              receivers:
+              - name: blackhole
+              #
+              - name: opsgenie_critical
+                opsgenie_configs:
+                  - api_key: 00000000-0000-0000-0000-000000000000
+                    responders:
+                      - name: example-team
+                        type: team
+                    message: "{{ .GroupLabels.cluster_name }} | {{ .CommonAnnotations.message }}"
+                    priority: "P1"
+              #
+              - name: opsgenie_warning
+                opsgenie_configs:
+                  - api_key: 00000000-0000-0000-0000-000000000000
+                    responders:
+                      - name: example-team
+                        type: team
+                    message: "{{ .GroupLabels.cluster_name }} | {{ .CommonAnnotations.message }}"
+                    priority: "P3"
+              #
+              - name: opsgenie_info
+                opsgenie_configs:
+                  - api_key: 00000000-0000-0000-0000-000000000000
+                    responders:
+                      - name: example-team
+                        type: team
+                    message: "{{ .GroupLabels.cluster_name }} | {{ .CommonAnnotations.message }}"
+                    priority: "P5"
+              #
+              #- name: customer_slack
+              #  slack_configs:
+              #    - api_url: https://hooks.slack.com/services/000000000/00000000000/000000000000000000000000
+              #      username: prometheus
+              #      title: "cluster_name: '{{ .GroupLabels.cluster_name }}' | alert: '{{ .CommonAnnotations.message }}'"
+              #      text: "{{ .CommonAnnotations.description }}"
+              #      title_link: https://prometheus.example.com
+              #      send_resolved: true
   project: default
   syncPolicy:
     automated:

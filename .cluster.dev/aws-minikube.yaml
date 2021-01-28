@@ -1,11 +1,10 @@
-installed: false
+installed: true
 name: dev-minikube
 provider:
   type: aws
   region: us-east-1
   availability_zones:
-    - us-east-1b
-    - us-east-1c
+    - us-east-1a
   vpc: default
   domain: cluster.dev
   provisioner:
